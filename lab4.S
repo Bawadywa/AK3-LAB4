@@ -26,7 +26,7 @@ task1:
 	mov r6, X4
 	mov r7, #0
 
-	// Calculation start
+	// calc
 	adds r0, r2
 	adc r1, r3
 
@@ -54,9 +54,9 @@ task1:
 
 
 
-	sub r4, r6	//	(x3-x4)/2 start
+	sub r4, r6	//	(x3-x4)/2
 	sub r5, r7
-	lsrs r4, 1
+	lsrs r4, #1
 	bcc branch5
 	rrx r5, r5
 	b branch6
@@ -73,19 +73,20 @@ branch6:
 	
 
 
-// Result correction
+// correction
 check_result:
 	push {lr}
 	bvc step2
 	lsrs r0, #1
 	rrx r1, r1
 step2:
-	orrs r0, #0	// Update flag reg
+	orrs r0, #0	// update Z flag
 	bne step4
-
+	
+// step 3
 	mov r0, #0b10000000011000
 	           
-	lsl r0, #19
+	lsl r0, #18
 step4:
 	mov r8, #0b10000000011000
 	adds r1, r8
@@ -105,7 +106,7 @@ normalize:
 	lsrs r0, #1
 	rrx r1, r1
 step7:
-	bvs end_check_result
+	bvc end_check_result
 	lsrs r0, #1
 	rrx r1, r1
 
@@ -115,7 +116,7 @@ end_check_result:
 task2:
 	push {lr}
 
-	// Init regs
+	// init regs
 	mov r0, #8
 	mov r1, #2
 	mov r2, #22
